@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Home page{% endblock %}
+
+{% block content %}
+<h2>Hello {{user}}</h2>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for m in messages %}
+            <P>{{m}}</P>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<div style="margin-left: 50px;">
+    <form action="#" method="post">
+        <label for="email">Email</label>
+        <input type="email" name = 'email' placeholder="Enter Email..." value="namanh.ngco@gmail.com"></input>
+        <button style="background-color: black; color: aliceblue;">Submit</button>
+    </form>
+</div>
+{% endblock %}

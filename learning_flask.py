@@ -61,7 +61,14 @@ def login():
         session.permanent = True
         if user_name:
             session["user"] = user_name
-            flash("Log in Succesfully", 'info')
+            found_user = User.query.filter_by(name = user_name).first()
+            if found_user:
+                session["email"] = found_user.email
+            else:
+                user = User(user_name, "temp@gmail.com")
+                db.session.add(user)
+                db.session.commit()
+                flash("Created in Database", "info")
             return redirect(url_for("user", user = user_name))
     #logic remain /login
     if "user" in session:
@@ -73,11 +80,27 @@ def login():
 
 
 #session
-@app.route('/user')
+@app.route('/user', methods = ["POST", "GET"])
 def user():
+    email = None
     if "user" in session:
         name = session["user"]
-        return render_template("user.html", user = name)
+        if request.method == "POST":
+            if not request.form["email"] and request.form["name"]:
+                User.query.filter_by(name = name).delete()
+                db.session.commit()
+                flash("Deleted User")
+                return redirect(url_for("logout"))
+            else:
+                email = request.form["email"]
+                session["email"] = email
+                found_user = User.query.filter_by(name = name).first()
+                found_user.email = email
+                db.session.commit()
+                flash("Email updated")
+        elif "email" in session:
+                email = session["email"]
+        return render_template("user.html", user = name, email = email)
     else:
         flash("You haven't logged in yet")
         return redirect(url_for("login"))

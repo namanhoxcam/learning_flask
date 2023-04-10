@@ -13,8 +13,10 @@
 <div style="margin-left: 50px;">
     <form action="#" method="post">
         <label for="email">Email</label>
-        <input type="email" name = 'email' placeholder="Enter Email..." value="namanh.ngco@gmail.com"></input>
-        <button style="background-color: black; color: aliceblue;">Submit</button>
+        <input type="email" name = 'email' placeholder="Enter Email..." value="{{email if email}}"></input>
+        <button style="background-color: black; color: aliceblue;" type = "submit">Submit</button>
+        <input type="name" name = 'name' placeholder="Enter Name..." value="{{user if user}}"></input>
+        <button style="background-color: black; color: aliceblue;" type = "submit">Delete</button>
     </form>
 </div>
 {% endblock %}
